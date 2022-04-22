@@ -90,5 +90,28 @@ k apply -f ProviderConfig.yaml
 
 
 
+## Create AWS resources
+
+Link  
+- https://doc.crds.dev/github.com/crossplane/provider-aws
+
+
+vi crossplane-test-vpc.yaml
+```
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: VPC
+metadata:
+  name: crossplane-test-vpc
+spec:
+  forProvider:
+    region: eu-central-1
+    cidrBlock: 10.10.0.0/16
+    enableDnsSupport: true
+    enableDnsHostNames: true
+    instanceTenancy: default
+  providerConfigRef:
+    name: default
+```
+k apply -f crossplane-test-vpc.yaml
 
 
