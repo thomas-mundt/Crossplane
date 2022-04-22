@@ -94,6 +94,7 @@ k apply -f ProviderConfig.yaml
 
 Link  
 - https://doc.crds.dev/github.com/crossplane/provider-aws
+- https://github.com/crossplane/provider-aws/tree/master/examples
 
 
 vi crossplane-test-vpc.yaml
