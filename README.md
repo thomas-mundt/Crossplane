@@ -47,6 +47,29 @@ kubectl get provider.pkg --watch
 Login to your AWS account
 
 
+Create creds.conf file
+```
+AWS_PROFILE=default
+echo -e "[default]\naws_access_key_id = $(aws configure get aws_access_key_id --profile $AWS_PROFILE)\naws_secret_access_key = $(aws configure get aws_secret_access_key --profile $AWS_PROFILE)" > creds.conf
+
+[default]
+aws_access_key_id = xxxxx
+aws_secret_access_key = xxxxx
+```
+
+Create a Provider Secret
+```
+kubectl create secret generic aws-creds -n crossplane-system --from-file=creds=./creds.conf
+
+Tip: decode secret
+echo "<SECRET>" | base64 -d
+# mac
+openssl base64 -d
+# Online
+https://www.base64decode.org/
+```
+
+
 
 
 
