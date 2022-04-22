@@ -25,14 +25,29 @@ Install the provider
 ```
 # Azure
 kubectl crossplane install provider crossplane/provider-azure:v0.14.0
+kubectl get provider.pkg
 
 # AWS
 # https://github.com/crossplane/provider-aws
 kubectl crossplane install provider crossplane/provider-aws:v0.26.1
+kubectl get provider.pkg
 
 # Kubernetes
 # https://github.com/crossplane-contrib/provider-kubernetes
 kubectl crossplane install provider crossplane/provider-kubernetes:main
-
+kubectl get provider.pkg
 ```
+
+
+Now wait until the Provider becomes healthy
+```
+kubectl get provider.pkg --watch
+```
+
+Login to your AWS account
+
+
+
+
+
 
