@@ -70,6 +70,24 @@ https://www.base64decode.org/
 ```
 
 
+Configure the Provider
+```
+vi ProviderConfig.yaml
+
+apiVersion: aws.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: aws-creds
+      key: creds
+```
+k apply -f ProviderConfig.yaml
+
 
 
 
