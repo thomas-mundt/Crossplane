@@ -97,7 +97,9 @@ Link
 - https://github.com/crossplane/provider-aws/tree/master/examples
 
 
-vi crossplane-test-vpc.yaml
+## VPC
+
+
 ```
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: VPC
@@ -113,6 +115,111 @@ spec:
   providerConfigRef:
     name: default
 ```
-k apply -f crossplane-test-vpc.yaml
+
+
+
+## Subnets
+
+
+```
+---
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: Subnet
+metadata:
+  name: crossplane-test-subnet-1
+spec:
+  forProvider:
+    region: eu-central-1
+    availabilityZone: eu-central-1a
+    cidrBlock: 10.10.1.0/24
+    vpcIdRef:
+      name: crossplane-test-vpc
+    tags:
+      - key: Environment
+        value: Demo
+      - key: Name
+        value: crossplane-test-subnet-1
+    mapPublicIPOnLaunch: true
+  providerConfigRef:
+    name: default
+
+---
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: Subnet
+metadata:
+  name: crossplane-test-subnet-2
+spec:
+  forProvider:
+    region: eu-central-1
+    availabilityZone: eu-central-1b
+    cidrBlock: 10.10.2.0/24
+    vpcIdRef:
+      name: crossplane-test-vpc
+    tags:
+      - key: Environment
+        value: Demo
+      - key: Name
+        value: crossplane-test-subnet-2
+    mapPublicIPOnLaunch: true
+  providerConfigRef:
+    name: default
+```
+
+
+## Security Group
+
+```
+---
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: SecurityGroup
+metadata:
+  name: sample-cluster-sg
+spec:
+  forProvider:
+    region: eu-central-1
+    vpcIdRef:
+      name: crossplane-test-vpc
+    vpcId: crossplane-test-vpc
+    groupName: my-cool-ekscluster-sg
+    description: Cluster communication with worker nodes
+    tags:
+      - key: Environment
+        value: Demo
+      - key: Name
+        value: sample-cluster-sg
+    ingress:
+      - fromPort: 80
+        toPort: 80
+        ipProtocol: tcp
+        ipRanges:
+          - cidrIp: 10.10.0.0/8
+  providerConfigRef:
+    name: default
+
+```
+
+
+
+## EC2
+
+```
+---
+apiVersion: ec2.aws.crossplane.io/v1alpha1
+kind: Instance
+metadata:
+  name: sample-instance
+spec:
+  forProvider:
+    region: eu-central-1
+    imageId: ami-0006ba1ba3732dd33
+    blockDeviceMappings:
+      - deviceName: /dev/sdx
+        ebs:
+          volumeSize: 100
+    subnetIdRef:
+      name: crossplane-test-subnet-1
+  providerConfigRef:
+    name: default
+```
 
 
